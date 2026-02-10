@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Trinder - LFE</title>
-    <meta name="description" content="Swipez vos déchets avec Trinder ! L'expérience fictive par La Feuille d'Érable pour trouver votre service de recyclage.">
-
+    
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Trinder - LFE">
+    <meta property="og:title" content="Trinderpar La Feuille d'Érable">
     <meta property="og:description" content="Ne laissez plus vos déchets célibataires. Trouvez-leur le camion idéal !">
-    <meta property="og:image" content="https://www.feuille-erable.fr/wp-content/uploads/2021/03/logo-feuille-erable-1.png"> <meta property="og:url" content="https://www.feuille-erable.fr/">
+    <meta property="og:image" content="https://www.feuille-erable.fr/wp-content/uploads/2021/03/logo-feuille-erable-1.png">
+    <meta property="og:url" content="https://www.feuille-erable.fr/">
+
+    <title>Trinder - Match Pro</title>
     <style>
         :root {
-            --theme-pink: #FF385C;
-            --theme-red: #FF655B;
-            --theme-green: #00e676;
+            /* Palette de couleurs */
+            --theme-pink: #FF385C; /* Ancienne couleur Tinder */
+            --theme-red: #FF655B;  /* Rouge pour NON */
+            --theme-green: #00e676; /* Vert pour OUI */
+            
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
             --shadow-md: 0 8px 20px rgba(0,0,0,0.12);
             --shadow-lg: 0 20px 40px rgba(0,0,0,0.2);
@@ -22,7 +25,6 @@
 
         * { box-sizing: border-box; }
 
-        /* FIX MOBILE : Utilisation de fixed pour empêcher le scroll élastique */
         html, body {
             position: fixed;
             width: 100%;
@@ -45,10 +47,8 @@
             background: white;
             width: 100%;
             max-width: 400px;
-            /* FIX MOBILE : Hauteur dynamique stricte */
             height: 100%; 
             max-height: 750px;
-            
             border-radius: 24px;
             box-shadow: var(--shadow-lg);
             overflow: hidden;
@@ -68,15 +68,22 @@
 
         /* HEADER */
         .header {
-            height: 70px; /* Hauteur fixe pour stabilité */
+            height: auto;
             min-height: 70px;
-            padding: 0 15px;
+            padding: 10px 15px;
             border-bottom: 1px solid #f0f0f0;
             background: white;
             z-index: 10;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .header-top {
+            display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
         }
         
         .logo-container { display: flex; align-items: center; gap: 10px; }
@@ -98,35 +105,37 @@
             font-weight: 700;
         }
 
-        /* ZONE IMAGE - FIX CRITIQUE MOBILE */
+        .site-description {
+            margin: 8px 0 0 0;
+            font-size: 0.85rem;
+            color: #888;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* ZONE IMAGE */
         .image-area {
             position: relative;
-            flex: 1; /* Remplit tout l'espace restant */
+            flex: 1;
             width: 100%;
             background-color: #f5f5f5;
             overflow: hidden;
             touch-action: none;
-            display: flex; /* Centre le contenu si besoin */
+            display: flex;
             justify-content: center;
             align-items: center;
         }
         
-        /* La pile prend TOUT l'espace du parent explicitement */
         .card-stack {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
             perspective: 1000px;
         }
 
         .truck-card {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -137,428 +146,17 @@
         }
 
         .truck-img {
-            width: 100%;
-            height: 100%; /* L'image remplit la carte */
+            width: 100%; height: 100%;
             object-fit: cover;
             pointer-events: none;
-            background-color: #ddd; /* Fallback visuel */
+            background-color: #ddd;
         }
 
-        /* INFO PROFIL */
         .profile-info {
             position: absolute;
-            bottom: 0;
-            left: 0;
+            bottom: 0; left: 0;
             width: 100%;
             padding: 60px 20px 20px;
             background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
             color: white;
             pointer-events: none;
-            z-index: 2;
-        }
-
-        .truck-name { margin: 0; font-size: 1.8rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .truck-details { margin: 5px 0 0; font-size: 1rem; opacity: 0.95; font-weight: 500; }
-
-        /* ACTIONS FOOTER */
-        .actions {
-            height: 100px;
-            min-height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            padding: 10px;
-            background: white;
-            z-index: 20;
-        }
-
-        .btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.2s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .btn:active { transform: scale(0.9); }
-        .btn-pass { background: white; color: var(--theme-red); border: 2px solid #eee; }
-        .btn-like { background: linear-gradient(135deg, var(--theme-pink), var(--theme-red)); color: white; border: none; }
-
-        /* FOOTER TEXT */
-        .footer {
-            padding: 5px 10px 15px;
-            text-align: center;
-            background: white;
-            width: 100%;
-        }
-        .footer-text { margin: 0; font-size: 0.7rem; color: #888; margin-bottom: 5px; }
-        .footer-logo { height: 20px; width: auto; opacity: 0.8; }
-
-        /* MATCH OVERLAY */
-        .match-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 9999;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-        
-        .match-title {
-            font-family: 'Brush Script MT', 'Cookie', cursive;
-            font-size: 3.5rem;
-            color: var(--theme-green);
-            transform: rotate(-5deg);
-            margin-bottom: 30px;
-        }
-        
-        .avatars { display: flex; gap: 15px; margin-bottom: 30px; align-items: center; }
-        .avatar-circle {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            border: 4px solid white;
-            background-size: cover;
-            background-position: center;
-            background-color: #333;
-        }
-
-        .cta-btn {
-            padding: 15px 35px;
-            background: white;
-            color: var(--theme-pink);
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 50px;
-            margin-top: 15px;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        
-        .cta-btn.secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-            margin-left: 10px;
-        }
-
-        /* Indicateurs (Tampons) */
-        .swipe-indicator {
-            position: absolute;
-            top: 40px;
-            padding: 10px 20px;
-            border: 4px solid;
-            border-radius: 10px;
-            font-size: 2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0;
-            z-index: 200;
-            pointer-events: none;
-        }
-        .swipe-indicator.left { right: 40px; color: var(--theme-red); border-color: var(--theme-red); transform: rotate(15deg); }
-        .swipe-indicator.right { left: 40px; color: var(--theme-green); border-color: var(--theme-green); transform: rotate(-15deg); }
-
-    </style>
-</head>
-<body>
-
-    <div class="card-container">
-        <div class="header">
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo" class="logo-brand">
-                <span class="logo-text">Trinder</span>
-            </div>
-            <div class="match-counter">
-                <span id="matchCount">0</span> match(s)
-            </div>
-        </div>
-        
-        <div class="image-area" id="imageArea">
-            <div class="card-stack" id="cardStack">
-                </div>
-            
-            <div class="swipe-indicator right" id="nopeStamp">NOPE</div>
-            <div class="swipe-indicator left" id="likeStamp">LIKE</div>
-        </div>
-
-        <div class="actions">
-            <button class="btn btn-pass" onclick="triggerSwipe('left')" aria-label="Passer">✖</button>
-            <button class="btn btn-like" onclick="triggerSwipe('right')" aria-label="J'aime">❤</button>
-        </div>
-        
-        <div class="footer">
-            <p class="footer-text">Expérience fictive par La Feuille d'Érable</p>
-            <img src="logo-feuille-erable.png" alt="La Feuille d'Érable" class="footer-logo">
-        </div>
-    </div>
-
-    <div class="match-overlay" id="matchOverlay">
-        <div class="match-title">It's a Match!</div>
-        <div class="avatars">
-            <div class="avatar-circle" style="background-image: url('dechets.jpg');"></div>
-            <div class="avatar-circle" id="matchAvatar"></div>
-        </div>
-        <p>Vos déchets et nos services sont faits l'un pour l'autre.</p>
-        <div>
-            <a href="https://www.feuille-erable.fr/contactez-nous/" target="_blank" class="cta-btn">📞 Contacter</a>
-            <button class="cta-btn secondary" onclick="closeMatch()">Continuer</button>
-        </div>
-    </div>
-
-    <script>
-        // --- DONNÉES ---
-        const camions = [
-            { nom: "Collecte Carton", image: "camion1.jpg", details: "Je me plierais en quatre pour toi." },
-            { nom: "Collecte Papier", image: "camion2.jpg", details: "Froissé, mais une valeur sûre." },
-            { nom: "Collecte Cagettes", image: "camion3.jpg", details: "Prête à tout plaquer pour toi." },
-        ];
-
-        // --- ÉTAT ---
-        let state = {
-            topCardIndex: 0,
-            matchCount: 0,
-            isDragging: false,
-            startX: 0,
-            currentX: 0,
-            isAnimating: false
-        };
-
-        // --- DOM ---
-        const DOM = {
-            stack: document.getElementById('cardStack'),
-            likeStamp: document.getElementById('likeStamp'),
-            nopeStamp: document.getElementById('nopeStamp'),
-            matchOverlay: document.getElementById('matchOverlay'),
-            matchAvatar: document.getElementById('matchAvatar'),
-            matchCount: document.getElementById('matchCount'),
-            imageArea: document.getElementById('imageArea')
-        };
-
-        // --- INITIALISATION ---
-        function init() {
-            // Ajouter les 3 premières cartes
-            for (let i = 0; i < 3; i++) {
-                addCardToDOM(i);
-            }
-            reorderStack();
-            attachEvents();
-        }
-
-        // --- CRÉATION DE CARTE ---
-        function createCardHTML(data) {
-            const div = document.createElement('div');
-            div.className = 'truck-card';
-            div.innerHTML = `
-                <img src="${data.image}" class="truck-img" alt="${data.nom}" onerror="this.src='https://via.placeholder.com/400x600/eee/999?text=Image+Manquante'">
-                <div class="profile-info">
-                    <h2 class="truck-name">${data.nom}</h2>
-                    <p class="truck-details">♻️ ${data.details}</p>
-                </div>
-            `;
-            return div;
-        }
-
-        function addCardToDOM(offsetIndex) {
-            const dataIndex = (state.topCardIndex + offsetIndex) % camions.length;
-            const card = createCardHTML(camions[dataIndex]);
-            DOM.stack.appendChild(card);
-        }
-
-        // --- LOGIQUE VISUELLE (Z-INDEX) ---
-        function reorderStack() {
-            const cards = Array.from(DOM.stack.children);
-            cards.forEach((card, index) => {
-                // index 0 = Carte du dessus
-                card.style.zIndex = 100 - index;
-                
-                if (index === 0) {
-                    card.style.transform = 'scale(1)';
-                    card.style.opacity = '1';
-                } else {
-                    // Les cartes du dessous sont plus petites et décalées
-                    const scale = 1 - (index * 0.05);
-                    const translateY = index * 10;
-                    card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-                    card.style.opacity = '1'; // On s'assure qu'elles sont visibles
-                }
-                
-                // Reset classes
-                card.classList.remove('animate-left', 'animate-right', 'reset');
-            });
-        }
-
-        function getTopCard() {
-            const cards = Array.from(DOM.stack.children);
-            // La carte avec le plus grand Z-Index ou la première de la liste visuelle
-            // Dans reorderStack, children[0] a le plus grand Z.
-            return cards[0] || null;
-        }
-
-        // --- GESTION TACTILE & SOURIS ---
-        function attachEvents() {
-            const area = DOM.imageArea;
-            
-            // Mouse
-            area.addEventListener('mousedown', onDragStart);
-            document.addEventListener('mousemove', onDragMove);
-            document.addEventListener('mouseup', onDragEnd);
-
-            // Touch
-            area.addEventListener('touchstart', onDragStart, { passive: false });
-            document.addEventListener('touchmove', onDragMove, { passive: false });
-            document.addEventListener('touchend', onDragEnd);
-        }
-
-        function getClientX(e) {
-            return e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-        }
-
-        function onDragStart(e) {
-            if (state.isAnimating) return;
-            if (e.target.closest('.btn')) return;
-
-            const topCard = getTopCard();
-            if (!topCard) return;
-
-            state.isDragging = true;
-            state.startX = getClientX(e);
-            
-            // Important pour iOS: empêcher le scroll de la page pendant le drag
-            if (e.type === 'touchstart') {
-               // On ne preventDefault que si on est sur la zone de carte pour éviter de bloquer tout le scroll si besoin
-            }
-            
-            topCard.style.transition = 'none';
-        }
-
-        function onDragMove(e) {
-            if (!state.isDragging) return;
-            
-            // Bloquer le scroll natif pendant le mouvement de swipe
-            if (e.cancelable && e.type === 'touchmove') e.preventDefault();
-
-            const x = getClientX(e);
-            const deltaX = x - state.startX;
-            state.currentX = deltaX;
-
-            const rotation = deltaX * 0.05;
-            const topCard = getTopCard();
-            
-            if (topCard) {
-                topCard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
-                updateIndicators(deltaX);
-            }
-        }
-
-        function onDragEnd(e) {
-            if (!state.isDragging) return;
-            state.isDragging = false;
-
-            const deltaX = state.currentX;
-            const threshold = window.innerWidth * 0.25; // 25% de la largeur de l'écran
-
-            if (Math.abs(deltaX) > threshold) {
-                const direction = deltaX > 0 ? 'right' : 'left';
-                performSwipe(direction);
-            } else {
-                resetCard();
-            }
-            
-            resetIndicators();
-            state.currentX = 0;
-        }
-
-        // --- INDICATEURS ---
-        function updateIndicators(deltaX) {
-            const opacity = Math.min(Math.abs(deltaX) / 100, 1);
-            if (deltaX > 0) {
-                DOM.likeStamp.style.opacity = opacity;
-                DOM.nopeStamp.style.opacity = 0;
-            } else {
-                DOM.nopeStamp.style.opacity = opacity;
-                DOM.likeStamp.style.opacity = 0;
-            }
-        }
-
-        function resetIndicators() {
-            DOM.likeStamp.style.opacity = 0;
-            DOM.nopeStamp.style.opacity = 0;
-        }
-
-        function resetCard() {
-            const card = getTopCard();
-            if (card) {
-                card.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                card.style.transform = 'translateX(0) rotate(0)';
-            }
-        }
-
-        // --- ACTIONS ---
-        function triggerSwipe(direction) {
-            if (state.isAnimating) return;
-            performSwipe(direction);
-        }
-
-        function performSwipe(direction) {
-            const card = getTopCard();
-            if (!card) return;
-
-            state.isAnimating = true;
-
-            // Transition CSS
-            card.style.transition = 'transform 0.4s ease-out, opacity 0.4s';
-            card.style.transform = `translateX(${direction === 'right' ? 150 : -150}%) rotate(${direction === 'right' ? 30 : -30}deg)`;
-            card.style.opacity = '0';
-
-            setTimeout(() => {
-                card.remove();
-                state.isAnimating = false;
-                
-                if (direction === 'right') showMatch();
-
-                // Boucle infinie : Ajout nouvelle carte
-                state.topCardIndex++; 
-                addCardToDOM(2); 
-                reorderStack();
-
-            }, 300);
-        }
-
-        // --- MATCH SYSTEM ---
-        function showMatch() {
-            const likedIndex = (state.topCardIndex - 1 + camions.length) % camions.length; 
-            const truck = camions[likedIndex];
-            
-            DOM.matchAvatar.style.backgroundImage = `url('${truck.image}')`;
-            state.matchCount++;
-            DOM.matchCount.textContent = state.matchCount;
-            DOM.matchOverlay.style.display = 'flex';
-        }
-
-        function closeMatch() {
-            DOM.matchOverlay.style.display = 'none';
-        }
-
-        // Lancement
-        document.addEventListener('DOMContentLoaded', init);
-
-    </script>
-</body>
-</html>
